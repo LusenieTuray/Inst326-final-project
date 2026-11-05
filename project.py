@@ -49,3 +49,47 @@ def generate_customers():
 
 list = generate_customers()
 print(list)
+
+
+def maintain_store(inventory, cleaning_mins, cleanliness):
+    pairs_stocked = 0
+
+    for shoe in inventory:
+        room_left = inventory[shoe]["capacity"] - inventory [shoe]["shelf"]
+        in_backroom = invenory[shoe]["backroom"]
+
+    if in_backroom < room_left:
+        amount = in_backroom
+    else:
+        amount = room_left
+    inventory[shoe]["shelf"] = inventory[shoe]["shelf"] + amount
+    inventory[shoe]["backroom"] = inventory[shoe]["backroom"] - amount
+    pairs_stocked = pairs_stocked + amount
+
+    cleanliness = cleanliness + cleaning_mins * 2
+    if cleanliness > 100:
+        cleanliness = 100
+
+    full_shelves = 0
+    for shoe in inventory:
+        if inventory[shoe]["shelf"] == inventory[shoe]["capacity"]:
+            full_shelves = full_shelves + 1
+    satisfaction = cleanliness // 2 + full_shelves * 10
+    if satisfaction > 100:
+        satisfaction = 100
+    return {
+        "cleanliness": cleanliness,
+        "satisfaction": satisfaction,
+        "pairs_stocked": pairs_stocked,
+    }
+
+fake_inventory = {
+    "sports": {"backroom": 12, "shelf": 3, "capacity": 10},
+    "boots": {"backroom": 2, "shelf": 1, "capacity": 8},
+    "formal": {"backroom": 0, "shelf":6, "capacity": 6},
+    "casual": {"backroom": 20, "shelf": 0, "capacity": 12},
+}
+
+result = maintain_store(fake_inventory, 15, 55)
+print(result)
+print(fake_inventory)
