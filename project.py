@@ -52,6 +52,22 @@ print(list)
 
 
 def maintain_store(inventory, cleaning_mins, cleanliness):
+    """ Restock the shelves, clean the store, and figure out customer satisfaction.
+ 
+    Args:
+        inventory (dict): Each shoe type maps to a dict with "backroom",
+            "shelf", and "capacity" (all ints).
+            Example: {"boots": {"backroom": 10, "shelf": 2, "capacity": 8}}
+        cleaning_mins (int): Minutes spent cleaning the store.
+        cleanliness (int): Cleanliness score before cleaning (0 to 100).
+ 
+    Returns:
+        dict: The new "cleanliness" score, the "satisfaction" score,
+            and the number of "pairs_stocked".
+ 
+    Side effects:
+        Moves shoes from the backroom to the shelf in the inventory.
+        """
     pairs_stocked = 0
 
     for shoe in inventory:
