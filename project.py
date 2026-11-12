@@ -144,3 +144,4 @@ fake_store = {
 }
 
 big_decisions(fake_store, 6, True, 400, 300, 5)
+big_decisions(fake_store, 6, True, 400, 100, 5)
