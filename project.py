@@ -72,7 +72,7 @@ def maintain_store(inventory, cleaning_mins, cleanliness):
 
     for shoe in inventory:
         room_left = inventory[shoe]["capacity"] - inventory [shoe]["shelf"]
-        in_backroom = invenory[shoe]["backroom"]
+        in_backroom = inventory[shoe]["backroom"]
 
     if in_backroom < room_left:
         amount = in_backroom
@@ -109,3 +109,38 @@ fake_inventory = {
 result = maintain_store(fake_inventory, 15, 55)
 print(result)
 print(fake_inventory)
+
+def big_decisions(store, hire, ad, hire_cost, ad_cost, emp_needed):
+    
+    for emp in range(hire):
+        if store["money"] < hire_cost:
+            print(f"You hired {emp+1} employee(s). You need more money to hire "
+                  "another employee.")
+            break
+        else:
+            store["money"] -= hire_cost
+            store["num_employees"] += 1
+    
+    if ad:
+        if store["money"] < ad_cost:
+            print(f"You need an additional ${ad_cost - store["money"]} to post "
+                  f"an advertisement.")
+        else:
+            store["money"] -= ad_cost
+            store["num_customers"] += random.randint(2, 10)
+            print("Your advertisement post attracted more customers.")
+    
+    if store["num_employees"] < emp_needed:
+        print("Your store could still use more employees.")
+        
+    print(f"Money remaining: ${store["money"]}\nEmployees: "
+          f"{store["num_employees"]}\nCustomers: {store["num_customers"]}")
+    
+    
+fake_store = {
+    "money" : 2500,
+    "num_employees" : 5,
+    "num_customers" : 15
+}
+
+big_decisions(fake_store, 6, True, 400, 300, 5)
