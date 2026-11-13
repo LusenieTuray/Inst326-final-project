@@ -50,7 +50,40 @@ def generate_customers():
 list = generate_customers()
 print(list)
 
+def buy_stock(store, inventory):
+    """Let the player buy shoes for the backroom until they enter 'done'.
 
+    Each purchase reduces the money available for the next one.
+
+    Args:
+        store (dict): Store information containing the current money balance.
+        inventory (dict): Shoe types mapped to their stock counts.
+
+    Returns:
+        None.
+
+    Side effects:
+        Deducts the cost of each purchase from the store's money and adds
+        the purchased shoes to the backroom.
+    """
+    costs = {"formal": 45, "casual": 40, "sports": 55, "boots": 35}
+
+    while True:
+        print(f"Money left: ${store['money']}")
+        shoe_type = input("Buy formal, casual, sports, boots, or done: ")
+
+        if shoe_type == "done":
+            break
+
+        quantity = int(input("How many pairs? "))
+        total_cost = costs[shoe_type] * quantity
+
+        if store["money"] >= total_cost:
+            store["money"] -= total_cost
+            inventory[shoe_type]["backroom"] += quantity
+        else:
+            print("You don't have enough money for that purchase.")
+    
 def maintain_store(inventory, cleaning_mins, cleanliness):
     """ Restock the shelves, clean the store, and figure out customer satisfaction.
  
@@ -74,13 +107,13 @@ def maintain_store(inventory, cleaning_mins, cleanliness):
         room_left = inventory[shoe]["capacity"] - inventory [shoe]["shelf"]
         in_backroom = inventory[shoe]["backroom"]
 
-    if in_backroom < room_left:
-        amount = in_backroom
-    else:
-        amount = room_left
-    inventory[shoe]["shelf"] = inventory[shoe]["shelf"] + amount
-    inventory[shoe]["backroom"] = inventory[shoe]["backroom"] - amount
-    pairs_stocked = pairs_stocked + amount
+        if in_backroom < room_left:
+            amount = in_backroom
+        else:
+            amount = room_left
+        inventory[shoe]["shelf"] = inventory[shoe]["shelf"] + amount
+        inventory[shoe]["backroom"] = inventory[shoe]["backroom"] - amount
+        pairs_stocked = pairs_stocked + amount
 
     cleanliness = cleanliness + cleaning_mins * 2
     if cleanliness > 100:
@@ -106,9 +139,7 @@ fake_inventory = {
     "casual": {"backroom": 20, "shelf": 0, "capacity": 12},
 }
 
-result = maintain_store(fake_inventory, 15, 55)
-print(result)
-print(fake_inventory)
+
 
 def big_decisions(store, hire, ad, hire_cost, ad_cost, emp_needed):
     
@@ -142,6 +173,10 @@ fake_store = {
     "num_employees" : 5,
     "num_customers" : 15
 }
+buy_stock(fake_store, fake_inventory)
+result = maintain_store(fake_inventory, 15, 55)
+print(result)
+print(fake_inventory)
 
 big_decisions(fake_store, 6, True, 400, 300, 5)
 big_decisions(fake_store, 6, True, 400, 100, 5)
