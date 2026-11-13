@@ -26,6 +26,10 @@ class Customer():
         
         
 def generate_customers():
+    ### Creates a random number of customers for the day
+    ## for the player to interact with
+    ## Returns: todays_cust (list) A list of Customer objects
+    ## Side Effects: Creates Customer objects
     todays_cust = []
     num_customers = random.randint(3, 10)
     
