@@ -25,11 +25,21 @@ class Customer():
         return f"{self.name} like's {self.type}"
         
         
+
 def generate_customers():
-    ### Creates a random number of customers for the day
-    ## for the player to interact with
-    ## Returns: todays_cust (list) A list of Customer objects
-    ## Side Effects: Creates Customer objects
+    """
+    Creates a random number of customers for the day.
+
+    Args:
+        None
+
+    Returns:
+        list: A list of Customer objects for the day.
+
+    Side Effects:
+        Creates Customer objects.
+    """
+
     todays_cust = []
     num_customers = random.randint(3, 10)
     
@@ -209,3 +219,77 @@ print(fake_inventory)
 
 big_decisions(fake_store, 6, 400, 300, 5)
 big_decisions(fake_store, 6, 400, 100, 5)
+
+
+
+
+# Function by Lusenie Turay
+def calculate_market_demand(store_prices, competitor_prices, base_demand, reputation):
+
+    """
+    Calculates shoe demand based on competitor prices and store reputation.
+
+    Args:
+        store_prices (dict): Our store's shoe prices.
+        competitor_prices (dict): Other stores' shoe prices.
+        base_demand (dict): Starting demand for each shoe type.
+        reputation (int): Store reputation from 0 to 100.
+
+    Returns:
+        dict: The updated demand for each shoe type.
+
+    Raises:
+        ValueError: If the inputs are invalid.
+
+    Side Effects:
+        None.
+    """
+
+    if (not isinstance(reputation, int)
+            or isinstance(reputation, bool)
+            or not 0 <= reputation <= 100):
+        raise ValueError("The Store's reputation must be between 0 and 100.")
+
+    if (store_prices.keys() != competitor_prices.keys()
+            or store_prices.keys() != base_demand.keys()):
+        raise ValueError("All dictionaries must have the same shoe types.")
+
+    updated_demand = {}
+
+    for shoe_type in store_prices:
+        our_price = store_prices[shoe_type]
+        competitor_price = competitor_prices[shoe_type]
+        demand = base_demand[shoe_type]
+
+        if (not isinstance(our_price, (int, float))
+                or isinstance(our_price, bool)
+                or not 0 < our_price < float("inf")):
+            raise ValueError("Your shoe prices must be positive numbers.")
+
+        if (not isinstance(competitor_price, (int, float))
+                or isinstance(competitor_price, bool)
+                or not 0 < competitor_price < float("inf")):
+            raise ValueError("Competitorshoe prices must be positive numbers.")
+
+        if (not isinstance(demand, int)
+                or isinstance(demand, bool) or demand < 0):
+            raise ValueError("Base demand must be a nonnegative integer.")
+
+        # Compare our prices with  other company etitor prices
+        price_ratio = our_price / competitor_price
+
+        if price_ratio > 1.10:
+            demand = demand * 0.80
+        elif price_ratio < 0.90:
+            demand = demand * 1.15
+
+        # Adjust demand number based on store reputation
+        if reputation >= 75:
+            demand = demand * 1.10
+        elif reputation < 40:
+            demand = demand * 0.90
+
+        # Round demand number to a whole number
+        updated_demand[shoe_type] = max(0, int(demand + 0.5))
+
+    return updated_demand
