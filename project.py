@@ -145,8 +145,28 @@ fake_inventory = {
 
 
 
-def big_decisions(store, hire, ad, hire_cost, ad_cost, emp_needed):
+def big_decisions(store, hire, hire_cost, ad_cost, emp_needed):
+    """
+    Decide whether to hire employee(s) and/or pay for an advertising post to
+    attract more customers.
     
+    Args:
+        store (dict) - stores the amounbt of money a store has, the number of
+        employees, and number of customers
+        hire (int) - provides the number of employees the plaayer wants to hire,
+        which could be zero
+        hire_cost (int) - the cost of hiring an employee
+        ad_cost (int) - the ost of posting an advertisement
+        emp_needed (int) - the number of employees needed to keep the 
+        store running.
+
+    Returns:
+        None
+    Side Effects:
+        Reduces the store’s available money when an action is taken. 
+        May increase the employee count and expected customer numbers.
+    """
+
     for emp in range(hire):
         if store["money"] < hire_cost:
             print(f"You hired {emp+1} employee(s). You need more money to hire "
@@ -156,7 +176,12 @@ def big_decisions(store, hire, ad, hire_cost, ad_cost, emp_needed):
             store["money"] -= hire_cost
             store["num_employees"] += 1
     
-    if ad:
+    print(f"Money remaining: ${store["money"]}\nEmployees: "
+          f"{store["num_employees"]}\nCustomers: {store["num_customers"]}")
+    
+    ad_choice = input(f"You can post an ad for ${ad_cost}. Would you like to?"
+                      "(yes/no)")
+    if ad_choice == "yes":
         if store["money"] < ad_cost:
             print(f"You need an additional ${ad_cost - store["money"]} to post "
                   f"an advertisement.")
@@ -182,5 +207,5 @@ result = maintain_store(fake_inventory, 15, 55)
 print(result)
 print(fake_inventory)
 
-big_decisions(fake_store, 6, True, 400, 300, 5)
-big_decisions(fake_store, 6, True, 400, 100, 5)
+big_decisions(fake_store, 6, 400, 300, 5)
+big_decisions(fake_store, 6, 400, 100, 5)
